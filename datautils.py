@@ -60,8 +60,13 @@ def get_c4(nsamples, seed, seqlen, model):
         'allenai/c4', 'allenai--c4', data_files={'validation': 'en/c4-validation.00000-of-00008.json.gz'}, split='validation',use_auth_token=True
     )
 
-    from transformers import AutoTokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
+    # from transformers import AutoTokenizer
+    # tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
+
+    from transformers import LlamaTokenizer
+    tokenizer = LlamaTokenizer.from_pretrained(model, use_fast=False)
+
+    
 
     import random
     random.seed(seed)
@@ -104,12 +109,12 @@ def get_c4(nsamples, seed, seqlen, model):
 def get_ptb_new(nsamples, seed, seqlen, model):
     from datasets import load_dataset
     traindata = load_dataset('ptb_text_only', 'penn_treebank', split='train')
-    testdata = load_dataset('ptb_text_only', 'penn_treebank', split='test')
+    testdata  = load_dataset('ptb_text_only', 'penn_treebank', split='test')
 
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
-    trainenc = tokenizer(" ".join(traindata['sentence']), return_tensors='pt')
-    testenc = tokenizer(" ".join(testdata['sentence']), return_tensors='pt')
+    trainenc  = tokenizer(" ".join(traindata['sentence']), return_tensors='pt')
+    testenc   = tokenizer(" ".join(testdata['sentence']), return_tensors='pt')
 
     import random
     random.seed(seed)
@@ -160,6 +165,7 @@ def get_c4_new(nsamples, seed, seqlen, model):
     valenc = TokenizerWrapper(valenc)
 
     return trainloader, valenc
+    
 def get_loaders(
     name, nsamples=128, seed=0, seqlen=2048, model=''
 ):
